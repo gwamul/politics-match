@@ -18,7 +18,7 @@ public class PoliticsMatchApplication {
 	@Bean
 	CommandLineRunner init(PoliticianDataService service) {
 	    return args -> {
-	        service.fetchAndSaveAllData();
+	        //service.fetchAndSaveAllData();
 	    };
 	}
 

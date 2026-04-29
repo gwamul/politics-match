@@ -26,4 +26,10 @@ public interface PoliticianRepository extends JpaRepository<Politician, String> 
     // 4. 성별 통계
     @Query("SELECT p.sexGbnNm, COUNT(p) FROM Politician p GROUP BY p.sexGbnNm")
     List<Object[]> countByGender();
+    
+    
+    // 선택한 속성으로 나열
+    List<Politician> findByCityNameAndPolyNmAndSexGbnNmAndReeleGbnNm(
+            String cityName, String polyNm, String sexGbnNm, String reeleGbnNm
+    );
 }

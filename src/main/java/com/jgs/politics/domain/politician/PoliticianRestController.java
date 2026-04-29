@@ -17,7 +17,7 @@ public class PoliticianRestController {
     @Autowired
     private PoliticianService politicianService;
 
-   
+    // 정 경 사 젠더 환경 외교 ... 
     
     @GetMapping("/search")
     public ResponseEntity<List<PoliticianSummaryDTO>> searchPoliticians(
