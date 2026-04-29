@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.dto;
 
 import lombok.Builder;
 import lombok.Getter;

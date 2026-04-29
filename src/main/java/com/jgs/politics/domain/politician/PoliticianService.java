@@ -3,6 +3,7 @@ package com.jgs.politics.domain.politician;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.jgs.politics.domain.politician.dto.PoliticianSummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

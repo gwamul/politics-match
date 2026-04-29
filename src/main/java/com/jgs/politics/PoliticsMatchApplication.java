@@ -14,12 +14,6 @@ public class PoliticsMatchApplication {
 		SpringApplication.run(PoliticsMatchApplication.class, args);
 	}
 	
-	// ProjectApplication.java 안에 추가
-	@Bean
-	CommandLineRunner init(PoliticianDataService service) {
-	    return args -> {
-	        //service.fetchAndSaveAllData();
-	    };
-	}
+
 
 }
