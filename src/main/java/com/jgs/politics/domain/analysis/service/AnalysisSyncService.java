@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.analysis;
+package com.jgs.politics.domain.analysis.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,14 +13,16 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jgs.politics.domain.analysis.AnalysisSyncState;
+import com.jgs.politics.domain.analysis.repository.AnalysisSyncStateRepository;
 import com.jgs.politics.domain.bill.BillAnalysis;
-import com.jgs.politics.domain.bill.BillAnalysisRepository;
+import com.jgs.politics.domain.bill.repository.BillAnalysisRepository;
 import com.jgs.politics.domain.politician.PartyAnalysis;
-import com.jgs.politics.domain.politician.PartyAnalysisRepository;
 import com.jgs.politics.domain.politician.PoliticianProfile;
-import com.jgs.politics.domain.politician.PoliticianProfileRepository;
+import com.jgs.politics.domain.politician.repository.PartyAnalysisRepository;
+import com.jgs.politics.domain.politician.repository.PoliticianProfileRepository;
 import com.jgs.politics.domain.vote.VoteHistory;
-import com.jgs.politics.domain.vote.VoteHistoryRepository;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

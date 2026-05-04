@@ -1,7 +1,10 @@
-package com.jgs.politics.domain.vote;
+package com.jgs.politics.domain.vote.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.jgs.politics.domain.vote.VoteHistory;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
 
 import java.util.List;
 

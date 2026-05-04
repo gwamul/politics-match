@@ -1,6 +1,10 @@
-package com.jgs.politics.domain.bill;
+package com.jgs.politics.domain.bill.controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.jgs.politics.domain.bill.BillAnalysis;
+import com.jgs.politics.domain.bill.repository.BillAnalysisRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,9 +1,12 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.jgs.politics.domain.politician.Politician;
 import com.jgs.politics.domain.politician.dto.PoliticianSummaryDTO;
+import com.jgs.politics.domain.politician.repository.PoliticianRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

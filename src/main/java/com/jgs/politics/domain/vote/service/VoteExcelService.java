@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.vote;
+package com.jgs.politics.domain.vote.service;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jgs.politics.domain.politician.Politician;
-import com.jgs.politics.domain.politician.PoliticianRepository;
+import com.jgs.politics.domain.politician.repository.PoliticianRepository;
+import com.jgs.politics.domain.vote.VoteHistory;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
 import com.opencsv.CSVReader;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.vote;
+package com.jgs.politics.domain.vote.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jgs.politics.domain.vote.VoteHistory;
 import com.jgs.politics.domain.vote.dto.BillVoteSummaryResponse;
 import com.jgs.politics.domain.vote.dto.IndividualVoteDTO;
 import com.jgs.politics.domain.vote.dto.MemberIdentityDTO;
 import com.jgs.politics.domain.vote.dto.MemberVoteHistoryResponse;
 import com.jgs.politics.domain.vote.dto.VoteResponse;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
 

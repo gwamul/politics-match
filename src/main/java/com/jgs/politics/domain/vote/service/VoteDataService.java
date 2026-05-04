@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.vote;
+package com.jgs.politics.domain.vote.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.jgs.politics.domain.vote.VoteHistory;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

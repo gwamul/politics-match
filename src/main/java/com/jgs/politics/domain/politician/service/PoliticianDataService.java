@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.jgs.politics.domain.politician.Politician;
+import com.jgs.politics.domain.politician.repository.PoliticianRepository;
 
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;

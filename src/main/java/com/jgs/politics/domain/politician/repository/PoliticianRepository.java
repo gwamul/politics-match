@@ -1,10 +1,12 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.jgs.politics.domain.politician.Politician;
 
 @Repository
 public interface PoliticianRepository extends JpaRepository<Politician, String> {

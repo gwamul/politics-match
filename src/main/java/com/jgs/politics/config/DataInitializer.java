@@ -5,9 +5,9 @@ import java.io.File;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.jgs.politics.domain.politician.PoliticianDataService;
-import com.jgs.politics.domain.vote.VoteExcelService;
-import com.jgs.politics.domain.vote.VoteHistoryRepository;
+import com.jgs.politics.domain.politician.service.PoliticianDataService;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
+import com.jgs.politics.domain.vote.service.VoteExcelService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

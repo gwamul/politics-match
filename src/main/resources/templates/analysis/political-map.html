@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>정치 성향 시각화</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #0b1020;
+            --panel: rgba(17, 24, 39, 0.9);
+            --panel-border: rgba(148, 163, 184, 0.2);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.14), transparent 35%),
+                var(--bg);
+            color: var(--text);
+        }
+        .wrap {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 32px;
+            letter-spacing: -0.03em;
+        }
+        .sub {
+            margin-top: 8px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        .controls, .panel {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+        }
+        .controls {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .field label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .field input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,.2);
+            background: rgba(15,23,42,.9);
+            color: var(--text);
+            outline: none;
+        }
+        .field input:focus { border-color: var(--accent); }
+        button {
+            align-self: end;
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+            color: white;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.9fr;
+            gap: 18px;
+        }
+        .panel {
+            padding: 18px;
+            min-height: 620px;
+        }
+        .panel h2 {
+            margin: 0 0 12px;
+            font-size: 18px;
+        }
+        canvas { width: 100% !important; height: 560px !important; }
+        .meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .pill {
+            border: 1px solid rgba(148,163,184,.18);
+            background: rgba(15,23,42,.65);
+            border-radius: 999px;
+            padding: 7px 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        thead th {
+            position: sticky;
+            top: 0;
+            background: rgba(15,23,42,.95);
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid rgba(148,163,184,.18);
+            color: #cbd5e1;
+        }
+        tbody td {
+            padding: 10px 8px;
+            border-bottom: 1px solid rgba(148,163,184,.12);
+            color: #e2e8f0;
+        }
+        .table-wrap {
+            max-height: 560px;
+            overflow: auto;
+        }
+        .small {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        @media (max-width: 1100px) {
+            .grid, .controls { grid-template-columns: 1fr; }
+            .panel { min-height: auto; }
+            canvas { height: 430px !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="hero">
+            <div>
+                <h1>정치 성향 시각화</h1>
+                <div class="sub">가중 추천 점수를 기반으로 의원의 위치를 표시합니다. 각 점에는 의원명과 정당명이 함께 표시됩니다.</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="field">
+                <label for="stanceWeight">stanceWeight</label>
+                <input id="stanceWeight" type="number" step="0.01" value="0.50" />
+            </div>
+            <div class="field">
+                <label for="consistencyWeight">consistencyWeight</label>
+                <input id="consistencyWeight" type="number" step="0.01" value="0.30" />
+            </div>
+            <div class="field">
+                <label for="activityWeight">activityWeight</label>
+                <input id="activityWeight" type="number" step="0.01" value="0.20" />
+            </div>
+            <div class="field">
+                <label for="pageSize">pageSize</label>
+                <input id="pageSize" type="number" step="1" value="80" />
+            </div>
+            <button onclick="reloadData()">다시 불러오기</button>
+        </div>
+
+        <div class="grid">
+            <div class="panel">
+                <h2>정치 성향 산점도</h2>
+                <div class="meta" id="summaryMeta"></div>
+                <canvas id="politicalChart"></canvas>
+            </div>
+            <div class="panel">
+                <h2>의원 순위표</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>의원</th>
+                                <th>정당</th>
+                                <th>점수</th>
+                                <th>활동</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingBody"></tbody>
+                    </table>
+                </div>
+                <div class="small">점 색상은 정당별로 다르게 표시됩니다. 툴팁과 표에서 정당명을 모두 확인할 수 있습니다.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chart;
+        let lastPayload = null;
+
+        const palette = [
+            '#38bdf8', '#f97316', '#22c55e', '#a855f7', '#ef4444', '#eab308',
+            '#14b8a6', '#f472b6', '#60a5fa', '#84cc16', '#fb7185', '#c084fc'
+        ];
+
+        function colorForParty(party) {
+            let hash = 0;
+            for (let i = 0; i < party.length; i++) {
+                hash = (hash * 31 + party.charCodeAt(i)) >>> 0;
+            }
+            return palette[hash % palette.length];
+        }
+
+        function buildDatasets(points) {
+            const byParty = new Map();
+            points.forEach(point => {
+                const party = point.polyNm || '무소속/기타';
+                if (!byParty.has(party)) byParty.set(party, []);
+                byParty.get(party).push(point);
+            });
+
+            return Array.from(byParty.entries()).map(([party, items]) => ({
+                label: party,
+                data: items.map(item => ({
+                    x: Number(item.x),
+                    y: Number(item.y),
+                    r: Math.max(4, Math.min(18, Number(item.size) / 8)),
+                    hgNm: item.hgNm,
+                    polyNm: item.polyNm,
+                    score: item.score,
+                    monaCd: item.monaCd
+                })),
+                backgroundColor: colorForParty(party),
+                borderColor: colorForParty(party),
+                borderWidth: 1.2,
+                hoverBorderWidth: 2,
+            }));
+        }
+
+        function renderChart(payload) {
+            const ctx = document.getElementById('politicalChart').getContext('2d');
+            if (chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+                type: 'bubble',
+                data: { datasets: buildDatasets(payload.points || []) },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#e5e7eb' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const raw = context.raw;
+                                    return `${raw.hgNm} (${raw.polyNm}) | score=${Number(raw.score).toFixed(4)} | x=${raw.x.toFixed(2)} | y=${raw.y.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: payload.xAxisLabel || 'X', color: '#cbd5e1' },
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148,163,184,.15)' }
+                        },
+                        y: {
+                            title: { display: true, text: payload.yAxisLabel || 'Y', color: '#cbd5e1' },
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148,163,184,.15)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTable(items) {
+            const body = document.getElementById('rankingBody');
+            body.innerHTML = '';
+            items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.hgNm}</td>
+                    <td>${item.polyNm || '무소속/기타'}</td>
+                    <td>${Number(item.finalScore).toFixed(4)}</td>
+                    <td>${item.totalVotes}</td>
+                `;
+                body.appendChild(row);
+            });
+        }
+
+        function renderMeta(payload) {
+            const meta = document.getElementById('summaryMeta');
+            const total = payload.totalElements || (payload.points ? payload.points.length : 0);
+            const parties = new Set((payload.points || []).map(p => p.polyNm || '무소속/기타')).size;
+            meta.innerHTML = `
+                <span class="pill">총 의원 ${total}명</span>
+                <span class="pill">정당 ${parties}개</span>
+                <span class="pill">알고리즘 ${payload.algorithmName || 'Weighted Nominate'}</span>
+                <span class="pill">버블 크기 = 활동량</span>
+            `;
+        }
+
+        async function reloadData() {
+            const pageSize = document.getElementById('pageSize').value || 80;
+            const stanceWeight = document.getElementById('stanceWeight').value || 0.50;
+            const consistencyWeight = document.getElementById('consistencyWeight').value || 0.30;
+            const activityWeight = document.getElementById('activityWeight').value || 0.20;
+
+            const rankingUrl = `/api/analysis/weighted-nominate?page=1&size=${encodeURIComponent(pageSize)}&stanceWeight=${encodeURIComponent(stanceWeight)}&consistencyWeight=${encodeURIComponent(consistencyWeight)}&activityWeight=${encodeURIComponent(activityWeight)}`;
+            const visualizationUrl = `/api/analysis/visualization/political-map?stanceWeight=${encodeURIComponent(stanceWeight)}&consistencyWeight=${encodeURIComponent(consistencyWeight)}&activityWeight=${encodeURIComponent(activityWeight)}`;
+
+            const [rankingResponse, visualizationResponse] = await Promise.all([
+                fetch(rankingUrl),
+                fetch(visualizationUrl)
+            ]);
+
+            const rankingPayload = await rankingResponse.json();
+            const visualizationPayload = await visualizationResponse.json();
+
+            lastPayload = visualizationPayload;
+            renderMeta(visualizationPayload);
+            renderChart(visualizationPayload);
+            renderTable(rankingPayload.items || []);
+        }
+
+        reloadData();
+    </script>
+</body>
+</html>

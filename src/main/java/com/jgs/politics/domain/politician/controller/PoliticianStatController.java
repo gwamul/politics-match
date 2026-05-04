@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.controller;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jgs.politics.domain.politician.Politician;
+import com.jgs.politics.domain.politician.repository.PoliticianRepository;
 
 @RestController
 @RequestMapping("/api/statistics")

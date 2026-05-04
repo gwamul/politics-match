@@ -1,4 +1,4 @@
-package com.jgs.politics.domain.vote;
+package com.jgs.politics.domain.vote.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +10,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.jgs.politics.domain.analysis.AnalysisSyncService;
+import com.jgs.politics.domain.analysis.service.AnalysisSyncService;
+import com.jgs.politics.domain.vote.VoteHistory;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

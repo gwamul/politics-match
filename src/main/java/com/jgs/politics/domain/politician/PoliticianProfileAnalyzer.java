@@ -1,7 +1,10 @@
 package com.jgs.politics.domain.politician;
 
+import com.jgs.politics.domain.politician.repository.PartyAnalysisRepository;
+import com.jgs.politics.domain.politician.repository.PoliticianProfileRepository;
 import com.jgs.politics.domain.vote.VoteHistory;
-import com.jgs.politics.domain.vote.VoteHistoryRepository;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,16 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.controller;
 
-import com.jgs.politics.domain.analysis.AnalysisSyncService;
-import com.jgs.politics.domain.analysis.AnalysisSyncStateRepository;
-import com.jgs.politics.domain.vote.VoteHistoryRepository;
+import com.jgs.politics.domain.analysis.repository.AnalysisSyncStateRepository;
+import com.jgs.politics.domain.analysis.service.AnalysisSyncService;
+import com.jgs.politics.domain.analysis.service.PoliticalRecommendationService;
+import com.jgs.politics.domain.analysis.dto.PoliticalVisualizationResponseDTO;
+import com.jgs.politics.domain.analysis.dto.WeightedNominateResponseDTO;
+import com.jgs.politics.domain.politician.PartyAnalysis;
+import com.jgs.politics.domain.politician.PoliticianProfile;
+import com.jgs.politics.domain.politician.repository.PartyAnalysisRepository;
+import com.jgs.politics.domain.politician.repository.PoliticianProfileRepository;
+import com.jgs.politics.domain.vote.repository.VoteHistoryRepository;
+
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.math.BigDecimal;
 
 /**
  * 의원 프로필 및 정당 분석 데이터 조회 API
@@ -25,6 +34,7 @@ public class AnalysisController {
     private final VoteHistoryRepository voteHistoryRepository;
     private final AnalysisSyncService analysisSyncService;
     private final AnalysisSyncStateRepository analysisSyncStateRepository;
+    private final PoliticalRecommendationService politicalRecommendationService;
 
     /**
      * 시스템 데이터 상태 확인
@@ -127,5 +137,31 @@ public class AnalysisController {
     public PartyAnalysis getPartyAnalysis(@PathVariable String partyName) {
         return partyAnalysisRepository.findByPartyName(partyName)
                 .orElseThrow(() -> new RuntimeException("정당 분석 데이터를 찾을 수 없습니다: " + partyName));
+    }
+
+    /**
+     * 가중 추천(Weighted Nominate) 결과 조회
+     */
+    @GetMapping("/weighted-nominate")
+    public WeightedNominateResponseDTO getWeightedNominate(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "0.50") BigDecimal stanceWeight,
+            @RequestParam(defaultValue = "0.30") BigDecimal consistencyWeight,
+            @RequestParam(defaultValue = "0.20") BigDecimal activityWeight) {
+
+        return politicalRecommendationService.getWeightedNominate(page, size, stanceWeight, consistencyWeight, activityWeight);
+    }
+
+    /**
+     * 정치 성향 시각화 데이터 조회
+     */
+    @GetMapping("/visualization/political-map")
+    public PoliticalVisualizationResponseDTO getPoliticalMap(
+            @RequestParam(defaultValue = "0.50") BigDecimal stanceWeight,
+            @RequestParam(defaultValue = "0.30") BigDecimal consistencyWeight,
+            @RequestParam(defaultValue = "0.20") BigDecimal activityWeight) {
+
+        return politicalRecommendationService.getVisualization(stanceWeight, consistencyWeight, activityWeight);
     }
 }

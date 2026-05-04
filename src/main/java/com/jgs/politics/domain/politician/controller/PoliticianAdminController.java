@@ -1,9 +1,11 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jgs.politics.domain.politician.service.PoliticianDataService;
 
 @RestController
 @RequestMapping("/admin/api")

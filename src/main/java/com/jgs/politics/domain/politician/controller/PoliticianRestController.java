@@ -1,8 +1,11 @@
-package com.jgs.politics.domain.politician;
+package com.jgs.politics.domain.politician.controller;
 
 import java.util.List;
 
+import com.jgs.politics.domain.politician.Politician;
 import com.jgs.politics.domain.politician.dto.PoliticianSummaryDTO;
+import com.jgs.politics.domain.politician.service.PoliticianService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
