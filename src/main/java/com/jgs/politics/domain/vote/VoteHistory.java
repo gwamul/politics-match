@@ -17,6 +17,7 @@ public class VoteHistory {
 
     private String monaCd;      // 국회의원코드 (MONA_CD)
     private String hgNm;        // 의원명 (HG_NM)
+    private String hgNmHanja;  // [추가] 의원명(한자)
     private String billId;      // 의안ID (BILL_ID)
     private String billName;    // 의안명 (BILL_NAME)
     private String voteDate;    // 의결일자 (VOTE_DATE)
@@ -25,10 +26,11 @@ public class VoteHistory {
     private String age;         // 대수 (AGE) - 22대 필터링용
 
     @Builder
-    public VoteHistory(String monaCd, String hgNm, String billId, String billName,
+    public VoteHistory(String monaCd, String hgNm, String hgNmHanja, String billId, String billName,
                        String voteDate, String resultVote, String polyNm, String age) {
         this.monaCd = monaCd;
         this.hgNm = hgNm;
+        this.hgNmHanja = hgNmHanja;
         this.billId = billId;
         this.billName = billName;
         this.voteDate = voteDate;

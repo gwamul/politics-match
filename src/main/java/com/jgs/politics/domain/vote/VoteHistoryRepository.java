@@ -1,12 +1,15 @@
 package com.jgs.politics.domain.vote;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface VoteHistoryRepository extends JpaRepository<VoteHistory, Long> {
@@ -36,4 +39,24 @@ public interface VoteHistoryRepository extends JpaRepository<VoteHistory, Long> 
     // 5. 특정 키워드가 포함된 법안들에 대한 표결 기록 (분야별 성향 분석용)
     // 예: "환경"이 포함된 법안에 이 의원이 어떻게 투표했는가
     List<VoteHistory> findByMonaCdAndBillNameContaining(String monaCd, String keyword);
+
+	boolean existsByBillId(String billId);
+
+    Optional<VoteHistory> findTopByOrderByIdDesc();
+
+    List<VoteHistory> findByIdGreaterThanOrderByIdAsc(Long id);
+	
+	
+	//최근 투표 순, 이름순 페이징 조회
+	Page<VoteHistory> findAll(Pageable pageable);
+
+	List<VoteHistory> findByBillId(String billId);
+
+	Page<VoteHistory> findByMonaCd(String monaCd, PageRequest pageRequest);
+	
+	Page<VoteHistory> findByMonaCd(String monaCd, Pageable pageable);
+    
+  
+
+	
 }
